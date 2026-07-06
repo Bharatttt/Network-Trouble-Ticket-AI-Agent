@@ -1,0 +1,31 @@
+services:
+  backend:
+    image: python:3.11-slim
+    working_dir: /app
+    volumes:
+      - ./backend:/app/backend
+    command: >
+      bash -c "pip install -q -r backend/requirements.txt &&
+               uvicorn backend.main:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    command: sh -c "npm install --silent && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+  # postgres and redis stubs — enable when you swap in real persistence
+  # postgres:
+  #   image: pgvector/pgvector:pg16
+  #   environment: { POSTGRES_PASSWORD: netops }
+  #   ports: ["5432:5432"]
+  # redis:
+  #   image: redis:7-alpine
+  #   ports: ["6379:6379"]
