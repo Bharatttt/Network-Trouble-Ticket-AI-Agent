@@ -258,7 +258,7 @@ function useBackendRecommendation() {
   const [backend, setBackend] = useState(null);
   useEffect(() => {
     const ctrl = new AbortController();
-    fetch("/api/ingest/alarms", {
+    fetch("https://network-agent-backend.onrender.com/api/ingest/alarms", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ alarms: [], incident_id: "INC-000123" }),
