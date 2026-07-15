@@ -1,5 +1,7 @@
 # Network Trouble-Ticket Resolution Agent
 
+🚀 **Live Demo:** [https://network-trouble-dashboard.onrender.com/](https://network-trouble-dashboard.onrender.com/)
+
 Full-stack scaffold for an agentic NOC assistant. The agent correlates live alarms, network topology, historical ticket resolutions, and SOPs to recommend resolution steps for network incidents. A human operator reviews and approves everything.
 
 ## What's in this scaffold
