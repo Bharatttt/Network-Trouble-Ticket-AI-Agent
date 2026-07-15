@@ -6,9 +6,8 @@ Full-stack scaffold for an agentic NOC assistant. The agent correlates live alar
 
 - **Backend** — FastAPI + Pydantic, five-agent orchestration pipeline that emits spec-compliant JSON. In-memory seed data (20 devices, 51 historical tickets, 10 SOPs, live alarm stream via SSE). Ready to swap in Postgres/pgvector + Neo4j for production.
 - **Frontend** — React 18 + Vite + TypeScript + Tailwind. Glassmorphism dashboard with live alarm stream, interactive topology, AI recommendation panel with animated confidence gauge, similar-tickets list, SOP checklists, audit trail, and AI assistant drawer.
-- **docker-compose.yml** — one-command startup for backend + frontend.
 
-## Run it
+## Run it locally
 
 ### Option A — docker-compose (easiest)
 
@@ -23,22 +22,21 @@ Then open:
 
 ### Option B — local, two terminals
 
-Backend:
+**Terminal 1 (Backend):**
+Run these commands from the project root (do *not* `cd` into the backend folder):
 ```bash
-cd backend
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 uvicorn backend.main:app --reload --port 8000
 ```
-(Run from the project root, not from inside `backend/`.)
 
-Frontend:
+**Terminal 2 (Frontend):**
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-Vite proxies `/api/*` to `http://localhost:8000`, so once both are running the dashboard shows an "● API live" badge in the top bar.
+Vite proxies `/api/*` to `http://localhost:8000` locally, so once both are running the dashboard shows an "● API live" badge in the top bar.
 
 ## Try the demo incident
 
@@ -53,9 +51,25 @@ curl -X POST http://localhost:8000/api/ingest/alarms \
 
 You'll get a full recommendation JSON: two ranked root causes, four action steps sourced from `SOP-LINK-001`, escalation to field-engineering, and confidence ~0.95.
 
+## Deployment (Render)
+
+This project can be easily deployed for free on [Render](https://render.com).
+
+### 1. Backend (Web Service)
+- **Root Directory:** *(leave blank)*
+- **Environment:** Python 3 (Add an Environment Variable: `PYTHON_VERSION=3.11.9`)
+- **Build Command:** `pip install -r backend/requirements.txt`
+- **Start Command:** `uvicorn backend.main:app --host 0.0.0.0 --port 10000`
+
+### 2. Frontend (Static Site)
+- **Root Directory:** `frontend`
+- **Build Command:** `npm run build`
+- **Publish Directory:** `dist`
+*(Make sure to update the fetch URL in `Dashboard.tsx` to point to your deployed backend URL before pushing to GitHub).*
+
 ## Project structure
 
-```
+```text
 network-ticket-agent/
 ├── backend/
 │   ├── main.py                     # FastAPI entrypoint
