@@ -74,6 +74,8 @@ def search_similar_tickets(alarm_signature: str,
     """Naive lexical similarity. Replace with pgvector cosine in production."""
     scored = []
     for t in seed.TICKETS:
+        if not t.get('resolution_summary') or t.get('status') not in ('resolved', 'closed'):
+            continue
         sig_score = max((_similarity(alarm_signature, s) for s in t["alarm_signatures"]), default=0)
         title_score = _similarity(alarm_signature, t["title"])
         score = 0.5 * sig_score + 0.3 * title_score

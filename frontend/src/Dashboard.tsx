@@ -150,7 +150,7 @@ const Panel = ({ children, className = "", style = {} }) => (
   <div className={`glass-panel ${className}`} style={style}>{children}</div>
 );
 
-const SectionTitle = ({ icon: Icon, children, right }) => (
+const SectionTitle = ({ icon: Icon, children, right = null }) => (
   <div className="flex items-center justify-between mb-3">
     <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">
       <Icon size={13} className="text-cyan-400" /> {children}
@@ -258,10 +258,10 @@ function useBackendRecommendation() {
   const [backend, setBackend] = useState(null);
   useEffect(() => {
     const ctrl = new AbortController();
-    fetch("https://network-agent-backend.onrender.com/api/ingest/alarms", {
+    fetch("/api/ingest/alarms", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ alarms: [], incident_id: "INC-000123" }),
+      body: JSON.stringify({ alarms: [], incident_id: "INC-000123", demo: true, reasoning: "rules" }),
       signal: ctrl.signal,
     })
       .then(r => r.ok ? r.json() : null)
