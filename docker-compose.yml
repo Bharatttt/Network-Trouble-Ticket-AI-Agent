@@ -2,22 +2,26 @@ services:
   backend:
     image: python:3.11-slim
     working_dir: /app
+    env_file: .env
     volumes:
       - ./backend:/app/backend
+      - ./runtime:/app/runtime
     command: >
       bash -c "pip install -q -r backend/requirements.txt &&
                uvicorn backend.main:app --host 0.0.0.0 --port 8000"
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
 
   frontend:
     image: node:20-alpine
+    environment:
+      NOC_API_TARGET: http://backend:8000
     working_dir: /app
     volumes:
       - ./frontend:/app
     command: sh -c "npm install --silent && npm run dev -- --host 0.0.0.0"
     ports:
-      - "5173:5173"
+      - "127.0.0.1:5173:5173"
     depends_on:
       - backend
 

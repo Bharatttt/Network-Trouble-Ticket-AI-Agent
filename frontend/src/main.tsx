@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import Dashboard from "./Dashboard";
+import Dashboard from "./Investigation";
 import "./styles/index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

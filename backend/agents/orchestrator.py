@@ -25,7 +25,7 @@ def _audit(event: str, detail: str) -> dict:
 
 def _extract_signature(msg: str) -> str:
     m = re.match(r"([A-Z_]+)", msg)
-    return m.group(1) if m else msg.split()[0]
+    return m.group(1) if m else (msg.split()[0] if msg.split() else 'UNKNOWN')
 
 
 def _classify_alarm_type(alarms: List[dict]) -> str:
